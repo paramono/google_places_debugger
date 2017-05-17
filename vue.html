@@ -44,125 +44,119 @@
 </head>
 
 <body>
-  <div id="app">
-  <div class="container-fluid">
+<div id="app">
+  <div id="app_input" class="container-fluid">
     <form class="form-inline" onsubmit="return false;">
-      <div class="form-group">
-        <label for="autocomplete">Address</label>
-        <input id="autocomplete" placeholder="Enter your address" class="form-control"
-               _onFocus="geolocate()" type="text"></input>
-
-      </div>
-      <div class="form-group">
-        <label for="type">Type</label>
-        <select v-model="selected">
-          <option v-for="option in options" v-bind:value="option.value">
-            {{ option.text }}
-          </option>
-        </select>
-
-        <!-- <select id="type" class="form-control"> -->
-        <!--   <1!-- choices from here --1> -->
-        <!--   <1!-- https://developers.google.com/places/supported_types#table3 --1> -->
-        <!--   <option value="geocode">Geocode</option> -->
-        <!--   <option value="address">Address</option> -->
-        <!--   <option value="establishment">Establishment</option> -->
-        <!--   <option value="(regions)">(regions)</option> -->
-        <!--   <option value="(cities)">(cities)</option> -->
-        <!-- </select> -->
-      </div>
+      <address-input></address-input>
+      <autocomplete-select></autocomplete-select>
     </form>
   </div>
-  </div>
+</div>
 
 
   <div id="locationField">
   </div>
 
-  <table id="address" class="table table-condensed table-bordered">
-    <tr>
-      <td>Name</td>
-      <td id="name"></td>
-      <td>Vicinity</td>
-      <td id="vicinity"></td>
-      <td>UTC offset</td>
-      <td id="utc_offset"></td>
-    </tr>
-    <tr>
-      <td>Coordinates</td>
-      <td id="geometry"</td>
-      <td>Viewport NE</td>
-      <td id="ne"></td>
-      <td>Viewport SW</td>
-      <td id="sw"></td>
-    </tr>
-    <tr>
-    </tr>
-    <tr>
-      <td>Place ID</td>
-      <td id="place_id"></td>
-    </tr>
-    <tr>
-      <td>Place Url</td>
-      <td id="place_url"></td>
-    </tr>
-    <tr>
-      <td>Icon</td>
-      <td>
-        <img id="icon">
-      </td>
-    </tr>
-    <tr>
-      <td>Rating</td>
-      <td id="rating"></td>
-      <td>Price Level</td>
-      <td id="price_level"></td>
-    </tr>
-    <tr>
-      <td>Website</td>
-      <td id="website"></td>
-    </tr>
-    <tr>
-      <td>Types</td>
-      <td id="types"></td>
-    </tr>
-    <tr>
-      <td>Permanently closed</td>
-      <td id="permanently_closed"></td>
-    </tr>
-    <tr>
-      <td>Formatted Phone Number</td>
-      <td id="formatted_phone_number"></td>
-    </tr>
-    <tr>
-      <td>International Phone Number</td>
-      <td id="international_phone_number"></td>
-    </tr>
-    <tr>
-      <td>HTML attributions</td>
-      <td id="html_attributions"></td>
-    </tr>
-  </table>
+  <div class="row">
+    <div class="col-xs-6">
+      <h3>Values</h3>
+      <table id="address" class="table table-condensed table-bordered">
+        <tr>
+          <td>Name</td>
+          <td id="name"></td>
+        </tr>
+        <tr>
+          <td>Vicinity</td>
+          <td id="vicinity"></td>
+        </tr>
+        <tr>
+          <td>UTC offset</td>
+          <td id="utc_offset"></td>
+        </tr>
+        <tr>
+          <td>Coordinates</td>
+          <td id="geometry"</td>
+        </tr>
+        <tr>
+          <td>Viewport NE</td>
+          <td id="ne"></td>
+        </tr>
+        <tr>
+          <td>Viewport SW</td>
+          <td id="sw"></td>
+        </tr>
+        <tr>
+          <td>Place ID</td>
+          <td id="place_id"></td>
+        </tr>
+        <tr>
+          <td>Place Url</td>
+          <td id="place_url"></td>
+        </tr>
+        <tr>
+          <td>Icon</td>
+          <td>
+            <img id="icon">
+          </td>
+        </tr>
+        <tr>
+          <td>Rating</td>
+          <td id="rating"></td>
+        </tr>
+        <tr>
+          <td>Price Level</td>
+          <td id="price_level"></td>
+        </tr>
+        <tr>
+          <td>Website</td>
+          <td id="website"></td>
+        </tr>
+        <tr>
+          <td>Types</td>
+          <td id="types"></td>
+        </tr>
+        <tr>
+          <td>Permanently closed</td>
+          <td id="permanently_closed"></td>
+        </tr>
+        <tr>
+          <td>Formatted Phone Number</td>
+          <td id="formatted_phone_number"></td>
+        </tr>
+        <tr>
+          <td>International Phone Number</td>
+          <td id="international_phone_number"></td>
+        </tr>
+        <tr>
+          <td>HTML attributions</td>
+          <td id="html_attributions"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-xs-6">
+      <h3>Address Components</h3>
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>short_name</th>
+            <th>long_name</th>
+            <th>types</th>
+          </tr>
+        </thead>
+        <tbody id="address_components">
+        </tbody>
 
-  <h3>Address Components</h3>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>short_name</th>
-        <th>long_name</th>
-        <th>types</th>
-      </tr>
-    </thead>
-    <tbody id="address_components">
-    </tbody>
+      </table> 
+    </div>
+  </div>
 
-  </table> 
+
 
   <div id="photos">
   </div>
   <script src="vue.js"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6hFDJ1i1x0NmQ0XzhY2gooT0L8fm8GmM&libraries=places&callback=vm.initAutocomplete"
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6hFDJ1i1x0NmQ0XzhY2gooT0L8fm8GmM&libraries=places&callback=initAutocomplete"
       async defer></script>
 </body>
 </html>

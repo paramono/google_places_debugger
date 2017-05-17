@@ -1,19 +1,141 @@
-var data = {
-  items: [{ text: 'Bananas', checked: true }, { text: 'Apples', checked: false }],
-  title: 'My Shopping List',
-  selected: 'geocode',
-  options: [
-    { text: 'Geocode', value: 'geocode'},
-    { text: 'Address', value: 'address'},
-    { text: 'Establishment', value: 'establishment'},
-    { text: '(regions)', value: '(regions)'},
-    { text: '(cities)', value: '(cities)'}
-  ]
-};
+var autocomplete_select = {
+  data: function() {
+    return {
+      selected: 'geocode',
+      options: [
+        { text: 'Geocode', value: 'geocode'},
+        { text: 'Address', value: 'address'},
+        { text: 'Establishment', value: 'establishment'},
+        { text: '(regions)', value: '(regions)'},
+        { text: '(cities)', value: '(cities)'}
+      ]
+    }
+  },
+  props: ['autocomplete'],
+  methods: {
+    setAutocompleteTypes: function(event) {
+        this.$root.autocomplete.setTypes([event.target.value]);
+    },
+  },
+  template: `
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select v-model="selected" @click="setAutocompleteTypes">
+        <option v-for="option in options" v-bind:value="option.value">
+          {{ option.text }}
+        </option>
+      </select>
+    </div>
+  `
+}
+
+var address_input = {
+  template: `
+    <div class="form-group">
+      <label for="autocomplete">Address</label>
+      <input id="autocomplete" placeholder="Enter your address" class="form-control"
+             _onFocus="geolocate()" type="text"></input>
+
+    </div>
+  `
+}
+
+var output_values = {
+  template: `
+    <table id="address" class="table table-condensed table-bordered">
+      <tr>
+        <td>Name</td>
+        <td id="name"></td>
+      </tr>
+      <tr>
+        <td>Vicinity</td>
+        <td id="vicinity"></td>
+      </tr>
+      <tr>
+        <td>UTC offset</td>
+        <td id="utc_offset"></td>
+      </tr>
+      <tr>
+        <td>Coordinates</td>
+        <td id="geometry"</td>
+      </tr>
+      <tr>
+        <td>Viewport NE</td>
+        <td id="ne"></td>
+      </tr>
+      <tr>
+        <td>Viewport SW</td>
+        <td id="sw"></td>
+      </tr>
+      <tr>
+        <td>Place ID</td>
+        <td id="place_id"></td>
+      </tr>
+      <tr>
+        <td>Place Url</td>
+        <td id="place_url"></td>
+      </tr>
+      <tr>
+        <td>Icon</td>
+        <td>
+          <img id="icon">
+        </td>
+      </tr>
+      <tr>
+        <td>Rating</td>
+        <td id="rating"></td>
+      </tr>
+      <tr>
+        <td>Price Level</td>
+        <td id="price_level"></td>
+      </tr>
+      <tr>
+        <td>Website</td>
+        <td id="website"></td>
+      </tr>
+      <tr>
+        <td>Types</td>
+        <td id="types"></td>
+      </tr>
+      <tr>
+        <td>Permanently closed</td>
+        <td id="permanently_closed"></td>
+      </tr>
+      <tr>
+        <td>Formatted Phone Number</td>
+        <td id="formatted_phone_number"></td>
+      </tr>
+      <tr>
+        <td>International Phone Number</td>
+        <td id="international_phone_number"></td>
+      </tr>
+      <tr>
+        <td>HTML attributions</td>
+        <td id="html_attributions"></td>
+      </tr>
+    </table>
+  `
+}
+
 
 var vm = new Vue({
   el: '#app',
-  data: data,
+  data: {
+    title: 'Geolocation example',
+    selected: 'geocode',
+    options: [
+      { text: 'Geocode', value: 'geocode'},
+      { text: 'Address', value: 'address'},
+      { text: 'Establishment', value: 'establishment'},
+      { text: '(regions)', value: '(regions)'},
+      { text: '(cities)', value: '(cities)'}
+    ]
+  },
+  components: {
+    'address-input': address_input,
+    'autocomplete-select': autocomplete_select,
+    'output-values': output_values,
+  },
   methods: {
     // addItem: function () {
     //   var text;
@@ -38,7 +160,7 @@ var vm = new Vue({
 
       // When the user selects an address from the dropdown, populate the address
       // fields in the form.
-      this.autocomplete.addListener('place_changed', fillInAddress);
+      this.autocomplete.addListener('place_changed', this.fillInAddress);
     },
     geolocate: function() {
       if (navigator.geolocation) {
@@ -54,36 +176,10 @@ var vm = new Vue({
           this.autocomplete.setBounds(circle.getBounds());
         });
       }
-    }
-  }
-});
-
-    var placeSearch, autocomplete;
-    var componentForm = {
-      street_number: 'short_name',
-      route: 'long_name',
-      locality: 'long_name',
-      administrative_area_level_1: 'short_name',
-      country: 'long_name',
-      postal_code: 'short_name'
-    };
-
-    // function setupSelect(id, types) {
-      var select = document.getElementById("type");
-      select.addEventListener('change', function() {
-        autocomplete.setTypes([select.value]);
-      });
-    // }
-
-
-    function fillInAddress() {
+    },
+    fillInAddress: function() {
       // Get the place details from the autocomplete object.
-      var place = autocomplete.getPlace();
-
-      // for (var component in componentForm) {
-      //   document.getElementById(component).innerHTML = '';
-      //   document.getElementById(component).disabled = false;
-      // }
+      var place = this.autocomplete.getPlace();
 
       // Get each component of the address from the place details
       // and fill the corresponding field on the form.
@@ -192,8 +288,30 @@ var vm = new Vue({
       global_place = place;
     }
 
-// function initAutocomplete() {
-//   vm.initAutocomplete();
-// }
+  }
+});
+
+    var placeSearch, autocomplete;
+    var componentForm = {
+      street_number: 'short_name',
+      route: 'long_name',
+      locality: 'long_name',
+      administrative_area_level_1: 'short_name',
+      country: 'long_name',
+      postal_code: 'short_name'
+    };
+
+    // function setupSelect(id, types) {
+      // var select = document.getElementById("type");
+      // select.addEventListener('change', function() {
+      //   autocomplete.setTypes([select.value]);
+      // });
+    // }
+
+
+
+    function initAutocomplete() {
+      vm.initAutocomplete();
+    }
     // Bias the autocomplete object to the user's geographical location,
     // as supplied by the browser's 'navigator.geolocation' object.
