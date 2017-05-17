@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Place Autocomplete Address Form</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <script src="https://unpkg.com/vue"></script>
+
+  <style>
+    #autocomplete {
+      width: 400px;
+    }
+    .d-inline-block {
+      display: inline-block;
+    }
+    #address td {
+      font-size: 10pt;
+    }
+    .img-photos {
+      max-width: 500px;
+    }
+    .field {
+      width: 99%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+  <div class="container-fluid">
+    <form class="form-inline" onsubmit="return false;">
+      <div class="form-group">
+        <label for="autocomplete">Address</label>
+        <input id="autocomplete" placeholder="Enter your address" class="form-control"
+               _onFocus="geolocate()" type="text"></input>
+
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select v-model="selected">
+          <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+
+        <!-- <select id="type" class="form-control"> -->
+        <!--   <1!-- choices from here --1> -->
+        <!--   <1!-- https://developers.google.com/places/supported_types#table3 --1> -->
+        <!--   <option value="geocode">Geocode</option> -->
+        <!--   <option value="address">Address</option> -->
+        <!--   <option value="establishment">Establishment</option> -->
+        <!--   <option value="(regions)">(regions)</option> -->
+        <!--   <option value="(cities)">(cities)</option> -->
+        <!-- </select> -->
+      </div>
+    </form>
+  </div>
+  </div>
+
+
+  <div id="locationField">
+  </div>
+
+  <table id="address" class="table table-condensed table-bordered">
+    <tr>
+      <td>Name</td>
+      <td id="name"></td>
+      <td>Vicinity</td>
+      <td id="vicinity"></td>
+      <td>UTC offset</td>
+      <td id="utc_offset"></td>
+    </tr>
+    <tr>
+      <td>Coordinates</td>
+      <td id="geometry"</td>
+      <td>Viewport NE</td>
+      <td id="ne"></td>
+      <td>Viewport SW</td>
+      <td id="sw"></td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+      <td>Place ID</td>
+      <td id="place_id"></td>
+    </tr>
+    <tr>
+      <td>Place Url</td>
+      <td id="place_url"></td>
+    </tr>
+    <tr>
+      <td>Icon</td>
+      <td>
+        <img id="icon">
+      </td>
+    </tr>
+    <tr>
+      <td>Rating</td>
+      <td id="rating"></td>
+      <td>Price Level</td>
+      <td id="price_level"></td>
+    </tr>
+    <tr>
+      <td>Website</td>
+      <td id="website"></td>
+    </tr>
+    <tr>
+      <td>Types</td>
+      <td id="types"></td>
+    </tr>
+    <tr>
+      <td>Permanently closed</td>
+      <td id="permanently_closed"></td>
+    </tr>
+    <tr>
+      <td>Formatted Phone Number</td>
+      <td id="formatted_phone_number"></td>
+    </tr>
+    <tr>
+      <td>International Phone Number</td>
+      <td id="international_phone_number"></td>
+    </tr>
+    <tr>
+      <td>HTML attributions</td>
+      <td id="html_attributions"></td>
+    </tr>
+  </table>
+
+  <h3>Address Components</h3>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>short_name</th>
+        <th>long_name</th>
+        <th>types</th>
+      </tr>
+    </thead>
+    <tbody id="address_components">
+    </tbody>
+
+  </table> 
+
+  <div id="photos">
+  </div>
+  <script src="vue.js"></script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6hFDJ1i1x0NmQ0XzhY2gooT0L8fm8GmM&libraries=places&callback=vm.initAutocomplete"
+      async defer></script>
+</body>
+</html>
