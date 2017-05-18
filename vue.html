@@ -4,157 +4,61 @@
   <title>Place Autocomplete Address Form</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
-  <style>
-    /* Always set the map height explicitly to define the size of the div
-     * element that contains the map. */
-    #map {
-      height: 100%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.1.1/ekko-lightbox.min.css" integrity="sha256-8aNQFtmxcOMVoOhLD4mrHqaKC2Ui++LmlQsoKTqxwIE=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.1.1/ekko-lightbox.min.js" integrity="sha256-1odJPEl+KoMUaA1T7QNMGSSU/r5LCKCRC6SL8P0r2gY=" crossorigin="anonymous"></script>
+
   <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
   <script src="https://unpkg.com/vue"></script>
-
-  <style>
-    #autocomplete {
-      width: 400px;
-    }
-    .d-inline-block {
-      display: inline-block;
-    }
-    #address td {
-      font-size: 10pt;
-    }
-    .img-photos {
-      max-width: 500px;
-    }
-    .field {
-      width: 99%;
-    }
-  </style>
 </head>
 
 <body>
 <div id="app">
-  <div id="app_input" class="container-fluid">
-    <form class="form-inline" onsubmit="return false;">
-      <address-input></address-input>
-      <autocomplete-select></autocomplete-select>
-    </form>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div id="app_input">
+            <input-select></input-select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-12">
+        <h3>Important Values</h3>
+        <output-main ref="output_main"></output-main>
+        <h3>Misc</h3>
+        <output-misc ref="output_misc"></output-misc>
+      </div>
+      <div class="col-sm-6 col-12">
+        <h3>Address Components</h3>
+        <output-components ref="output_components"></output-components>
+        <h3>Establishment values</h3>
+        <output-establishment ref="output_establishment"></output-establishment>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3>Photos</h3>
+        <output-photos ref="output_photos"></output-photos>
+      </div>
+    </div>
   </div>
 </div>
 
-
-  <div id="locationField">
-  </div>
-
-  <div class="row">
-    <div class="col-xs-6">
-      <h3>Values</h3>
-      <table id="address" class="table table-condensed table-bordered">
-        <tr>
-          <td>Name</td>
-          <td id="name"></td>
-        </tr>
-        <tr>
-          <td>Vicinity</td>
-          <td id="vicinity"></td>
-        </tr>
-        <tr>
-          <td>UTC offset</td>
-          <td id="utc_offset"></td>
-        </tr>
-        <tr>
-          <td>Coordinates</td>
-          <td id="geometry"</td>
-        </tr>
-        <tr>
-          <td>Viewport NE</td>
-          <td id="ne"></td>
-        </tr>
-        <tr>
-          <td>Viewport SW</td>
-          <td id="sw"></td>
-        </tr>
-        <tr>
-          <td>Place ID</td>
-          <td id="place_id"></td>
-        </tr>
-        <tr>
-          <td>Place Url</td>
-          <td id="place_url"></td>
-        </tr>
-        <tr>
-          <td>Icon</td>
-          <td>
-            <img id="icon">
-          </td>
-        </tr>
-        <tr>
-          <td>Rating</td>
-          <td id="rating"></td>
-        </tr>
-        <tr>
-          <td>Price Level</td>
-          <td id="price_level"></td>
-        </tr>
-        <tr>
-          <td>Website</td>
-          <td id="website"></td>
-        </tr>
-        <tr>
-          <td>Types</td>
-          <td id="types"></td>
-        </tr>
-        <tr>
-          <td>Permanently closed</td>
-          <td id="permanently_closed"></td>
-        </tr>
-        <tr>
-          <td>Formatted Phone Number</td>
-          <td id="formatted_phone_number"></td>
-        </tr>
-        <tr>
-          <td>International Phone Number</td>
-          <td id="international_phone_number"></td>
-        </tr>
-        <tr>
-          <td>HTML attributions</td>
-          <td id="html_attributions"></td>
-        </tr>
-      </table>
-    </div>
-    <div class="col-xs-6">
-      <h3>Address Components</h3>
-      <table class="table table-bordered table-condensed">
-        <thead>
-          <tr>
-            <th>short_name</th>
-            <th>long_name</th>
-            <th>types</th>
-          </tr>
-        </thead>
-        <tbody id="address_components">
-        </tbody>
-
-      </table> 
-    </div>
-  </div>
-
-
-
-  <div id="photos">
-  </div>
   <script src="vue.js"></script>
+  <script>
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+          //alwaysShowClose: true
+        });
+    });
+  </script>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6hFDJ1i1x0NmQ0XzhY2gooT0L8fm8GmM&libraries=places&callback=initAutocomplete"
       async defer></script>
