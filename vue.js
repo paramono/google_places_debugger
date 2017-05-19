@@ -43,7 +43,7 @@ var output_components = {
   template: `
     <p v-if="address_components.length === 0">No components defined yet</p>
     <div v-else class="table-responsive">
-      <table class="table  table-sm">
+      <table class="table table-sm table-bordered">
         <thead>
           <tr>
             <th>short_name</th>
@@ -122,7 +122,7 @@ var output_main = {
   template: `
     <p v-if="Object.keys(place).length === 0">No values defined yet</p>
     <div v-else class="table-responsive">
-      <table class="table table-sm ">
+      <table class="table table-sm table-bordered">
         <thead>
           <tr>
             <th>Key</th>
@@ -195,7 +195,7 @@ var output_misc = {
   template: `
     <p v-if="is_place_empty">No misc values defined yet</p>
     <div v-else class="table-responsive">
-      <table class="table table-sm ">
+      <table class="table table-sm table-bordered">
         <thead>
           <tr>
             <th>Key</th>
@@ -253,7 +253,7 @@ var output_establishment = {
   template: `
     <p v-if="Object.keys(place).length === 0">No establishment values defined yet</p>
     <div v-else class="table-responsive">
-      <table class="table table-sm ">
+      <table class="table table-sm table-bordered">
         <thead>
           <tr>
             <th>Key</th>
