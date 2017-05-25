@@ -144,7 +144,7 @@ var output_main = {
           </tr>
           <tr>
             <td>Place ID</td>
-            <td>{{place.id}}</td>
+            <td>{{place.place_id}}</td>
           </tr>
           <tr>
             <td>Map and Coordinates</td>
